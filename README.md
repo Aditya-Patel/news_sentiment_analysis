@@ -1,4 +1,4 @@
-# twitter_sentiment_analysis
+# Twitter Sentiment Analysis
 Twitter Sentiment Analysis for Stock Data
 
 Tools Used:
@@ -6,4 +6,4 @@ Tools Used:
 * PySpark
 * Kafka
 * Twitter API
-* Stocks API
+* Polygon.IO API for Ticker Feed
