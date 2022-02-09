@@ -8,9 +8,6 @@ from sqlite3 import connect
 import requests
 
 from dotenv import load_dotenv
-import kafkaToolbox as kfk
-
-kafka_producer = kfk.createKafkaProducer()
 
 # Load environment variables
 load_dotenv()
@@ -37,7 +34,12 @@ good_sentiments = {
     'strong earnings':1,
     'upgrade':2,
     'way to go':2,
-    ' up ':1
+    ' up ':1,
+    'strong':1,
+    'stronger':2,
+    'strongest':3,
+    '!':1,
+    'aggressive':1
 }
 
 bad_sentiments = {
@@ -85,5 +87,13 @@ def calculate_sentiment_score(text):
 
     return (pos_ind_score + neg_ind_score)
 
+def create_string(score, ticker, tweet_text=""):
+    twt_predicate = ""
+    if not tweet_text:
+        print(f"No tweets returned for ticker symbol {ticker}")
+        twt_predicate = f"No tweets found for {ticker}"
+    else:
+        twt_predicate = tweet_text
 
+    return f"{twt_predicate} | TWEET SENTIMENT SCORE: {score}"
     
