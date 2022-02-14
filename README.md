@@ -1,5 +1,5 @@
-# Twitter Sentiment Analysis
-Twitter Sentiment Analysis for Stock Data
+# News Headline Sentiment Analysis
+News Headline Analysis for Stock Data
 
 Tools Used:
 * Python
