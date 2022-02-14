@@ -5,5 +5,5 @@ Tools Used:
 * Python
 * PySpark
 * Kafka
-* Twitter API
-* Polygon.IO API for Ticker Feed
+* NewsAPI for live headline retrieval
+* Polygon.IO API for Stock Pricing
