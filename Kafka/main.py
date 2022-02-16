@@ -104,15 +104,17 @@ def print_json(json_dict, nestingCount=0, lastItem = True):
 def main():
     # Initialize Kafka producers and consumers
     # input_consumer = kfk.createKafkaConsumer('localhost:9092', 'user-input')
-    # news_output_producer = kfk.createKafkaProducer(server='localhost:9092')
-    # polygon_output_producer = kfk.createKafkaProducer(server='localhost:9092')
+    news_output_producer = kfk.createKafkaProducer(server='localhost:9092')
+    polygon_output_producer = kfk.createKafkaProducer(server='localhost:9092')
 
     ticker = input('Enter stock symbol: ').upper()
 
-    print_json(news_api_call(ticker=ticker, cur_date=cur_date))
-    print_json(polygon_api_call(ticker=ticker, to_date=cur_date, date_rnge=date_rnge, time_gran=time_gran, time_unit=time_unit))
-    # news_output_producer.send(topic=news_topic, key=ticker, value=news_api_call(ticker, to_date, date_rnge))
-    # polygon_output_producer.send(topic=polygon_topic, key=ticker, value=polygon_api_call(ticker, to_date, date_rnge, time_gran, time_unit))
+    news_json_out = news_api_call(ticker, cur_date, date_rnge)
+    polygon_json_out = polygon_api_call(ticker, cur_date, date_rnge, time_gran, time_unit)
+    print_json(news_json_out)
+    print_json(polygon_json_out)
+    news_output_producer.send(topic=news_topic, key=ticker, value=news_json_out)
+    polygon_output_producer.send(topic=polygon_topic, key=ticker, value=polygon_json_out)
 
 if __name__ == '__main__':
     main()
