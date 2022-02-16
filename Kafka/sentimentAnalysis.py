@@ -1,7 +1,7 @@
 import math
 from nltk.corpus import sentiwordnet as swn
 
-magnitude_dict = {1:'mildly', 2:'moderately', 3:'strongly', -1:'very strongly'}
+magnitude_dict = {0:'', 1:'mildly', 2:'moderately', 3:'strongly', -1:'very strongly'}
 
 def get_senti_score(word):
     swn_tup = swn.senti_synsets(word)
@@ -12,7 +12,7 @@ def get_senti_score(word):
         return 0
 
 def text_cleansing(text=""):
-    punc = '''!()[]{};:"\,<>./?@#$%^&*_~'''
+    punc = '''!()[]{;}:"\,<>./?@#$%^&*_~'''
     for mark in punc:
         if mark in text:
             text = text.replace(mark, "")
@@ -28,17 +28,16 @@ def get_value(sentiment):
         return -1, " negative"
 
 def get_magnitude(sentiment):
-    if abs(sentiment) == 0:
-        return 0, " "
-    rnd_abs_sent = round(abs(sentiment))
+    rnd_abs_sent = abs(sentiment)
     if rnd_abs_sent in magnitude_dict.keys():
         return rnd_abs_sent, magnitude_dict.get(rnd_abs_sent)
     else:
         return 4, magnitude_dict.get(-1)
 
 def get_sentiment_vector(sentiment):
-    binned_score, magnitude = get_magnitude(sentiment)
-    multiplier, value = get_value(sentiment)
+    rnd_sentiment = round(sentiment)
+    binned_score, magnitude = get_magnitude(rnd_sentiment)
+    multiplier, value = get_value(rnd_sentiment)
 
     return (multiplier * binned_score), f"{magnitude}{value}"
 
