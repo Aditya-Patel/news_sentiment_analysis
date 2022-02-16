@@ -1,9 +1,9 @@
-# twitter_sentiment_analysis
-Twitter Sentiment Analysis for Stock Data
+# News Headline Sentiment Analysis
+News Headline Analysis for Stock Data
 
 Tools Used:
 * Python
 * PySpark
 * Kafka
-* Twitter API
-* Stocks API
+* NewsAPI for live headline retrieval
+* Polygon.IO API for Stock Pricing
