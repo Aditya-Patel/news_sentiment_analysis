@@ -24,7 +24,5 @@ def connect_to_endpoint(url, params):
     return response.json()
 
 def print_article_details(article):
-    print(f"Title: {article['title']} \nDescription: {article['description']}\nSource: {article['url']}")
     sent_bin, sent_text = san.get_text_sentiment(f"{article['title'].lower()} {article['description'].lower()} {article['content'].lower()}")
-    print(f"Article Sentiment: {sent_text}\n")
     return sent_bin

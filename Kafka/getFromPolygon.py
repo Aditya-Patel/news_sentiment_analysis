@@ -15,7 +15,7 @@ POLY_TICK_EP = os.getenv('POLYGONTICKERENDPOINT')
 # Define API url
 def generate_url(ticker, **params):
     if params.get('range') and params.get('from_date') and params.get('to_date'):
-        search_url = POLY_PRICE_EP + '{}/range/{}/day/{}/{}?adjusted=true&sort=asc&limit=5000'.format(ticker, params.get('range'), params.get('from_date'), params.get('to_date'))
+        search_url = POLY_PRICE_EP + '{}/range/{}/{}/{}/{}?adjusted=true&sort=asc&limit=5000'.format(ticker, params.get('range'), params.get('time_span'), params.get('from_date'), params.get('to_date'))
     else:
         search_url = POLY_TICK_EP + f"{ticker}"
     return search_url
@@ -37,7 +37,7 @@ def endpoint_connect(url):
 def get_json_response(ticker, **params):
     # Generate URL
     if params.get('range') and params.get('from_date') and params.get('to_date'):
-        url = generate_url(ticker, range=params.get("range"), from_date=params.get("from_date"), to_date=params.get("to_date"))
+        url = generate_url(ticker, range=params.get("range"), time_span=params.get("time_span"), from_date=params.get("from_date"), to_date=params.get("to_date"))
     else:
         url = generate_url(ticker)
 
