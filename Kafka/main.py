@@ -1,8 +1,4 @@
-from http import server
-from re import A
-from traceback import print_last
-from types import NoneType
-from venv import create
+import json
 import sentimentAnalysis as san
 import getFromNews as news
 import getFromPolygon as poly
@@ -103,18 +99,19 @@ def print_json(json_dict, nestingCount=0, lastItem = True):
             
 def main():
     # Initialize Kafka producers and consumers
-    # input_consumer = kfk.createKafkaConsumer('localhost:9092', 'user-input')
+    input_consumer = kfk.createKafkaConsumer(bootstrap_server='localhost:9092', topics='user-input')
     news_output_producer = kfk.createKafkaProducer(server='localhost:9092')
     polygon_output_producer = kfk.createKafkaProducer(server='localhost:9092')
 
-    ticker = input('Enter stock symbol: ').upper()
-
-    news_json_out = news_api_call(ticker, cur_date, date_rnge)
-    polygon_json_out = polygon_api_call(ticker, cur_date, date_rnge, time_gran, time_unit)
-    print_json(news_json_out)
-    print_json(polygon_json_out)
-    news_output_producer.send(topic=news_topic, key=ticker, value=news_json_out)
-    polygon_output_producer.send(topic=polygon_topic, key=ticker, value=polygon_json_out)
-
+    for value in input_consumer.poll(timeout_ms=5000, max_records=1).values():
+        ticker = value[0].value.decode('utf-8')
+        news_json_out = news_api_call(ticker, cur_date)
+        polygon_json_out = polygon_api_call(ticker, cur_date, date_rnge, time_gran, time_unit)
+        print_json(news_json_out)
+        print_json(polygon_json_out)
+        news_output_producer.send(topic=news_topic, key=ticker.encode('utf-8'), value=json.dumps(news_json_out).encode('utf-8'))
+        polygon_output_producer.send(topic=polygon_topic, key=ticker.encode('utf-8'), value=json.dumps(polygon_json_out).encode('utf-8'))
+    
 if __name__ == '__main__':
-    main()
+    while True:
+        main()
